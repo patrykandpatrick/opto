@@ -13,7 +13,6 @@ class PreferenceImpl<S, C>(
     private val deserialize: (S) -> C,
     private val preferencesDataStore: DataStore<Preferences>,
 ) : Preference<C> {
-
     private fun S?.deserializedOrDefault() = this?.let { deserialize(it) } ?: defaultValue
 
     fun getFromPreferences(preferences: Preferences) = preferences[key].deserializedOrDefault()
