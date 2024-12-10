@@ -4,26 +4,27 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import com.patrykandpatrick.opto.domain.Preference
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class PreferenceImpl<S, C>(
+public class PreferenceImpl<C, S>(
     private val key: Preferences.Key<S>,
     private val defaultValue: C,
     private val serialize: (C) -> S,
     private val deserialize: (S) -> C,
-    private val preferencesDataStore: DataStore<Preferences>,
+    private val dataStore: DataStore<Preferences>,
 ) : Preference<C> {
-    private fun S?.deserializedOrDefault() = this?.let { deserialize(it) } ?: defaultValue
+    private fun S?.deserializedOrDefault() = if (this != null) deserialize(this) else defaultValue
 
-    fun getFromPreferences(preferences: Preferences) = preferences[key].deserializedOrDefault()
+    public fun get(preferences: Preferences): C = preferences[key].deserializedOrDefault()
 
-    override fun get() = preferencesDataStore.data.map(::getFromPreferences)
+    override fun get(): Flow<C> = dataStore.data.map(::get)
 
     override suspend fun set(value: C) {
-        preferencesDataStore.edit { it[key] = serialize(value) }
+        dataStore.edit { it[key] = serialize(value) }
     }
 
-    suspend fun update(function: (C) -> C) {
-        preferencesDataStore.edit { it[key] = serialize(function(it[key].deserializedOrDefault())) }
+    override suspend fun update(function: (C) -> C) {
+        dataStore.edit { it[key] = serialize(function(it[key].deserializedOrDefault())) }
     }
 }
