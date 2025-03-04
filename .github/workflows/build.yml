@@ -3,13 +3,13 @@ on:
   push:
   pull_request:
 jobs:
-  build-debug-apk:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
-          java-version: 17
           distribution: zulu
-      - uses: gradle/gradle-build-action@v3
-      - run: ./gradlew assembleDebug
+          java-version: 17
+      - uses: gradle/actions/setup-gradle@v3
+      - run: ./gradlew assemble
