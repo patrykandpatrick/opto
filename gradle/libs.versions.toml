@@ -10,5 +10,4 @@ preferencesDataStore = { group = "androidx.datastore", name = "datastore-prefere
 
 [plugins]
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
-kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlinJvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
