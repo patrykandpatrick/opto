@@ -2,7 +2,7 @@
 agp = "9.0.0"
 coroutines = "1.10.2"
 dataStore = "1.2.0"
-kotlin = "2.3.0"
+kotlin = "2.3.10"
 
 [libraries]
 coroutinesCore = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
